@@ -21,7 +21,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         if git ls-files --error-unmatch "Result.yaml" >/dev/null 2>&1; then
-          git rm Result.yaml
+          git rm -f Result.yaml
         fi
         git add Result.yaml
         git commit -m "Add file"
