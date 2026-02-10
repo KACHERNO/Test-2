@@ -1,0 +1,21 @@
+pg_query_profile:
+  query: |
+    select 'User moneta: query 1' as desc,'-6604440108063333482' as queryid, 1 as info union
+    select 'User moneta: query 2','-7460462762244174175',1 union
+    select 'User moneta: query 2','-7789302085337958777',1 union
+    select 'User metrics: query 1','8286548611902134001',1 union
+    select 'User metrics: query 2','6248747976042525326',1 union
+    select 'User moneta_app: query 1','2679801734457669616',1 union
+    select 'User moneta_app: query 2','2878213150682013626',1 union
+    select 'User moneta_app: query 3','3330899759356183320',1 union
+    select 'User moneta_app: query 4','4791034543426421885',1;
+  metrics:
+    - desc:
+        usage: "LABEL"
+        description: "Query description"
+    - queryid:
+        usage: "LABEL"
+        description: "Query ID"
+    - info:
+        usage: "GAUGE"
+        description: "Always one"

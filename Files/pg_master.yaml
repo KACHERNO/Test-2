@@ -1,0 +1,54 @@
+pg_master:
+  query: |
+    SELECT
+    usename,
+    application_name,
+    client_addr,
+    (pg_current_wal_lsn()-'0/0'::pg_lsn)::bigint as lsn_current,
+    (sent_lsn-'0/0'::pg_lsn)::bigint as lsn_sent,
+    (write_lsn-'0/0'::pg_lsn)::bigint as lsn_write,
+    (flush_lsn-'0/0'::pg_lsn)::bigint as lsn_flush,
+    (replay_lsn-'0/0'::pg_lsn)::bigint as lsn_replay,
+    EXTRACT(epoch FROM write_lag) as write_seconds,
+    EXTRACT(epoch FROM flush_lag) as flush_seconds,
+    EXTRACT(EPOCH FROM replay_lag) as rlag_seconds,
+    pg_wal_lsn_diff(sent_lsn, replay_lsn) as rlag_bytes
+    FROM pg_stat_replication
+    WHERE NOT pg_is_in_recovery();
+  metrics:
+    - usename:
+        usage: "LABEL"
+        description: "Database user"
+    - application_name:
+        usage: "LABEL"
+        description: "Application name"
+    - client_addr:
+        usage: "LABEL"
+        description: "Client IP address"
+    - lsn_current:
+        usage: "GAUGE"
+        description: "LSN current"
+    - lsn_sent:
+        usage: "GAUGE"
+        description: "LSN sent"
+    - lsn_write:
+        usage: "GAUGE"
+        description: "LSN write"
+    - lsn_flush:
+        usage: "GAUGE"
+        description: "LSN flush"
+    - lsn_replay:
+        usage: "GAUGE"
+        description: "LSN replay"
+    - write_seconds:
+        usage: "GAUGE"
+        description: "Write lag seconds"
+    - flush_seconds:
+        usage: "GAUGE"
+        description: "Flush lag seconds"
+    - rlag_seconds:
+        usage: "GAUGE"
+        description: "Replay lag seconds"
+    - rlag_byte:
+        usage: "GAUGE"
+        description: "Replay lag bytes"
