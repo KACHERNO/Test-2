@@ -14,12 +14,13 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Create file
-      run: cat Files/* >  Result_$(date +"%Y%m%d%H%M%S").txt
+      run: cat Files/* >  Result.yaml
       
     - name: Commit
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add Result*.txt
+        git rm Result.yaml
+        git add Result.yaml
         git commit -m "Add file"
         git push
