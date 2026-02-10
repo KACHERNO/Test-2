@@ -82,7 +82,7 @@ pg_replica:
   metrics:
     - rlag_seconds:
         usage: "GAUGE"
-        description: "Replay lag in seconds"
+        description: "Replay lag seconds"
     - rlag_bytes:
         usage: "GAUGE"
-        description: "Replay lag in bytes"
+        description: "Replay lag bytes"
