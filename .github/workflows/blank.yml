@@ -24,11 +24,15 @@ jobs:
     steps:
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: cat ./Files/*
+      - name: Generate File
+        run: |
+          echo "Data generated at $(date)" > result.txt
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Commit and Push
         run: |
-          echo Add 1,
-          echo Add 2.
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add result.txt
+          git commit -m "Auto-generate result.txt" || echo "No changes to commit"
+          git push
