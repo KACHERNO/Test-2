@@ -51,4 +51,4 @@ pg_master:
         description: "Replay lag seconds"
     - rlag_byte:
         usage: "GAUGE"
-        description: "Replay lag bytes"
+        description: "Replay lag IN bytes"
