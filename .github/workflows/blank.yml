@@ -20,7 +20,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        #git rm -f Result.yaml 2>/dev/null || true
         git add -f Result.yaml
         git commit -m "Add file"
         git push
