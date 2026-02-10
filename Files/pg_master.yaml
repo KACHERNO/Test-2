@@ -48,7 +48,7 @@ pg_master:
         description: "Flush lag seconds"
     - rlag_seconds:
         usage: "GAUGE"
-        description: "Replay lag seconds"
+        description: "Replay lag (seconds)"
     - rlag_byte:
         usage: "GAUGE"
-        description: "Replay lag IN bytes"
+        description: "Replay lag (bytes)"
