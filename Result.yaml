@@ -48,10 +48,10 @@ pg_master:
         description: "Flush lag seconds"
     - rlag_seconds:
         usage: "GAUGE"
-        description: "Replay lag seconds"
+        description: "Replay lag in seconds"
     - rlag_byte:
         usage: "GAUGE"
-        description: "Replay lag bytes"
+        description: "Replay lag in bytes"
 pg_query_profile:
   query: |
     select 'User moneta: query 1' as desc,'-6604440108063333482' as queryid, 1 as info union
