@@ -13,9 +13,6 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Check for updates
-      run: git diff --quiet || { echo "Изменений нет, выходим"; exit 0; }
-      
     - name: Create file
       run: cat Files/* >  Result.yaml
       
