@@ -1,0 +1,88 @@
+pg_master:
+  query: |
+    SELECT
+    usename,
+    application_name,
+    client_addr,
+    (pg_current_wal_lsn()-'0/0'::pg_lsn)::bigint as lsn_current,
+    (sent_lsn-'0/0'::pg_lsn)::bigint as lsn_sent,
+    (write_lsn-'0/0'::pg_lsn)::bigint as lsn_write,
+    (flush_lsn-'0/0'::pg_lsn)::bigint as lsn_flush,
+    (replay_lsn-'0/0'::pg_lsn)::bigint as lsn_replay,
+    EXTRACT(epoch FROM write_lag) as write_seconds,
+    EXTRACT(epoch FROM flush_lag) as flush_seconds,
+    EXTRACT(EPOCH FROM replay_lag) as rlag_seconds,
+    pg_wal_lsn_diff(sent_lsn, replay_lsn) as rlag_bytes
+    FROM pg_stat_replication
+    WHERE NOT pg_is_in_recovery();
+  metrics:
+    - usename:
+        usage: "LABEL"
+        description: "Database user"
+    - application_name:
+        usage: "LABEL"
+        description: "Application name"
+    - client_addr:
+        usage: "LABEL"
+        description: "Client IP address"
+    - lsn_current:
+        usage: "GAUGE"
+        description: "LSN current"
+    - lsn_sent:
+        usage: "GAUGE"
+        description: "LSN sent"
+    - lsn_write:
+        usage: "GAUGE"
+        description: "LSN write"
+    - lsn_flush:
+        usage: "GAUGE"
+        description: "LSN flush"
+    - lsn_replay:
+        usage: "GAUGE"
+        description: "LSN replay"
+    - write_seconds:
+        usage: "GAUGE"
+        description: "Write lag seconds"
+    - flush_seconds:
+        usage: "GAUGE"
+        description: "Flush lag seconds"
+    - rlag_seconds:
+        usage: "GAUGE"
+        description: "Replay lag seconds"
+    - rlag_byte:
+        usage: "GAUGE"
+        description: "Replay lag bytes"
+pg_query_profile:
+  query: |
+    select 'User moneta: query 1' as desc,'-6604440108063333482' as queryid, 1 as info union
+    select 'User moneta: query 2','-7460462762244174175',1 union
+    select 'User moneta: query 2','-7789302085337958777',1 union
+    select 'User metrics: query 1','8286548611902134001',1 union
+    select 'User metrics: query 2','6248747976042525326',1 union
+    select 'User moneta_app: query 1','2679801734457669616',1 union
+    select 'User moneta_app: query 2','2878213150682013626',1 union
+    select 'User moneta_app: query 3','3330899759356183320',1 union
+    select 'User moneta_app: query 4','4791034543426421885',1;
+  metrics:
+    - desc:
+        usage: "LABEL"
+        description: "Query description"
+    - queryid:
+        usage: "LABEL"
+        description: "Query ID"
+    - info:
+        usage: "GAUGE"
+        description: "Always one"
+pg_replica:
+  query: |
+    SELECT
+    GREATEST (0, EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))) as rlag_seconds,
+    pg_wal_lsn_diff(pg_last_wal_receive_lsn(), pg_last_wal_replay_lsn()) as rlag_bytes
+    WHERE  pg_is_in_recovery();
+  metrics:
+    - rlag_seconds:
+        usage: "GAUGE"
+        description: "Replay lag seconds"
+    - rlag_bytes:
+        usage: "GAUGE"
+        description: "Replay lag bytes"
