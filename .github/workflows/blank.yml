@@ -32,6 +32,7 @@ jobs:
       - name: Commit and Push
         run: |
           git config --global user.name "kacherno"
+          git config --global user.email "88chernovka@gmail.com"
           git add result.txt
           git commit -m "Auto-generate result.txt" || echo "No changes to commit"
           git push
