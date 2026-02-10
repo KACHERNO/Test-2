@@ -1,4 +1,4 @@
-name: Use GITHUB_TOKEN
+name: Test
 
 on: [push]
 
@@ -14,7 +14,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Create file
-      run: ls -lR >  test_$(date +"%Y%m%d%H%M%S").txt
+      run: cat Files/* >  Result_$(date +"%Y%m%d%H%M%S").txt
       
     - name: Commit
       run: |
