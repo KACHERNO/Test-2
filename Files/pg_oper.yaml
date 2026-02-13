@@ -14,4 +14,4 @@ pg_oper:
         description: "Operation last modified time"
     - last_delta:
         usage: "GAUGE"
-        description: "Operation last delta time (now - modified)"
+        description: "Operation last delta time"
