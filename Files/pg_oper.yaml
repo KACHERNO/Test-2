@@ -1,0 +1,17 @@
+pg_oper:
+  query: |
+    select
+    max(id) last_id,
+    max(modified) as last_modified,
+    EXTRACT(EPOCH FROM now()-max(modified)) as last_delta
+    from data_opers.operation
+  metrics:
+    - last_id:
+        usage: "GAUGE"
+        description: "Operation last ID"
+    - last_modified:
+        usage: "GAUGE"
+        description: "Operation last modified time"
+    - last_delta:
+        usage: "GAUGE"
+        description: "Operation last delta time (now - modified)"
