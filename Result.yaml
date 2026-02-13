@@ -68,7 +68,7 @@ pg_oper:
         description: "Operation last modified time"
     - last_delta:
         usage: "GAUGE"
-        description: "Operation last delta time..."
+        description: "Operation last delta time"
 pg_query_profile:
   query: |
     select 'User moneta: query 1' as desc,'-6604440108063333482' as queryid, 1 as info union
