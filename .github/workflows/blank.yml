@@ -10,8 +10,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create file
       run: cat Files/* >  Result.yaml
