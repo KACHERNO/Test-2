@@ -52,6 +52,23 @@ pg_master:
     - rlag_byte:
         usage: "GAUGE"
         description: "Replay lag (bytes)"
+pg_oper:
+  query: |
+    select
+    max(id) last_id,
+    max(modified) as last_modified,
+    EXTRACT(EPOCH FROM now()-max(modified)) as last_delta
+    from data_opers.operation
+  metrics:
+    - last_id:
+        usage: "GAUGE"
+        description: "Operation last ID"
+    - last_modified:
+        usage: "GAUGE"
+        description: "Operation last modified time"
+    - last_delta:
+        usage: "GAUGE"
+        description: "Operation last delta time (now - modified)"
 pg_query_profile:
   query: |
     select 'User moneta: query 1' as desc,'-6604440108063333482' as queryid, 1 as info union
